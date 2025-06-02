@@ -1,0 +1,38 @@
+.containerCarrossel {
+  margin: 70px 90px;
+  position: relative;
+}
+
+.imagemBanner {
+  border-radius: 10px;
+}
+
+.setaEsquerda,
+.setaDireita {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(82, 80, 80, 0.296);
+  border: none;  
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 2;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.setaEsquerda {
+  left: 10px;
+}
+
+.setaDireita {
+  right: 10px;
+}
+
+.setaEsquerda:hover,
+.setaDireita:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}

@@ -1,0 +1,81 @@
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 14vh;
+}	
+
+.mulher {
+    position: relative;
+    width: 100vw;
+    height: 102vh;
+}
+
+.mulherMeditando {
+    position: absolute;
+    top: -2%;
+    left: 23%;
+    bottom: 40%;
+    width: 800px;
+    height: 420px;
+    z-index: 20;
+}
+
+.elemento {
+    position: relative;
+    top: -1%;
+    width: 100%;
+    height: 82vh;
+    z-index: -1;
+    right: 1%;
+}
+
+.boasVindas {
+    position: absolute; 
+    top: 76%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    color: #1A1F24;
+    text-align: center; 
+}
+
+.aviso {
+    position: absolute; 
+    top: 81%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    color: #73808C;
+    text-align: center;
+}
+
+.botoes {
+    display: flex;
+    justify-content: center; 
+    position: absolute;
+    align-items: center; 
+    gap: 25px; 
+    top: 91%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.botaoC {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background-color: transparent;
+    color: #A7C4E7;
+    width: 100%;
+    height: 7vh;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.botaoC:hover {
+    background-color: #A7C4E7;
+    color: #fff;
+}

@@ -1,0 +1,62 @@
+.barraLateral {
+    width: 240px;
+    height: 100vh;
+    background-color: #e3e6e9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    position: fixed;
+  }
+  
+  .logo img {
+    width: 360px;
+    margin-top: -40px;
+    margin-bottom: -30px;
+    margin-left: -120px;
+  }
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    padding: 12px 12px;
+    cursor: pointer;
+    color: #1c1d1e;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 8px;
+  }
+
+  .menuItem:hover {
+    background-color: rgba(118, 118, 122, 0.2);
+    box-shadow: 0 4px 10px rgba(143, 169, 200, 0.9);
+    cursor: pointer;
+  }
+
+  .menuItem.active {
+    background-color: rgba(87, 158, 246, 0.4);
+  }
+
+  .icone {
+    margin-right: 10px;
+    font-size: 18px;
+  }
+
+  .sair {
+    display: flex;
+    align-items: center;
+    color: #1A1F24;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: auto;
+    padding: 14px 12px;
+    border-radius: 30px;
+    font-weight: bold;
+  }
+
+  .sair:hover {
+    background-color: rgba(87, 158, 246, 0.4);
+    box-shadow: 0 4px 10px rgba(167, 196, 231, 0.6);
+  }
