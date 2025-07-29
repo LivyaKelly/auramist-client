@@ -21,7 +21,6 @@ export default function Login() {
 
     try {
       const res = await fetch(`${API_URL}/api/auth/login`, {
-        console.log("🔍 API_URL:", API_URL),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
