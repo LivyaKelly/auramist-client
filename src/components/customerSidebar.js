@@ -34,29 +34,25 @@ export default function CustomerSideBar() {
         <ul>
           <li
             className={`${styles.menuItem} ${
-              router.pathname === "/cliente/agendamentos" ? styles.active : ""
+              router.pathname === "/customer/appointments" ? styles.active : ""
             }`}
-            onClick={() => router.push("/cliente/agendamentos")}
+            onClick={() => router.push("/customer/appointments")}
           >
             <FaCalendarAlt className={styles.icone} /> Agendamento
           </li>
           <li
             className={`${styles.menuItem} ${
-              router.pathname === "/cliente/dashboard" ? styles.active : ""
+              router.pathname === "/customer/dashboard" ? styles.active : ""
             }`}
-            onClick={() => router.push("/cliente/dashboard")}
+            onClick={() => router.push("/customer/dashboard")}
           >
             <FiBriefcase className={styles.icone} /> Serviços
           </li>
-          {/* <li className={`${styles.menuItem} ${router.pathname === "/favoritos" ? styles.active : ""}`}
-                        onClick={() => router.push('/favoritos')}>
-                        <FiHeart className={styles.icone} /> Favoritos
-                    </li> */}
           <li
             className={`${styles.menuItem} ${
-              router.pathname === "/cliente/perfil" ? styles.active : ""
+              router.pathname === "/customer/profileCustomer" ? styles.active : ""
             }`}
-            onClick={() => router.push("/cliente/perfil")}
+            onClick={() => router.push("/customer/profileCustomer")}
           >
             <FiUser className={styles.icone} /> Perfil
           </li>

@@ -4,8 +4,9 @@ import SideBar from "@/components/professionalSidebar";
 import styles from "@/styles/dashboard.module.css";
 import ServicoForm from "@/components/serviceForm";
 import ListaServicos from "@/components/serviceList";
+import withAuth from "@/utils/withAuth";
 
-export default function Dashboard() {
+function ProfessionalDashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [firstName, setFirstName] = useState("");
@@ -70,3 +71,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default withAuth(ProfessionalDashboard, ["PROFESSIONAL"]);

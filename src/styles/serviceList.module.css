@@ -6,7 +6,6 @@
 .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* sempre 2 por linha */
     gap: 1rem;
 }
 

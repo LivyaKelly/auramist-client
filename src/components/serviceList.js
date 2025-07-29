@@ -7,13 +7,13 @@ export default function ServiceList() {
   useEffect(() => {
     async function buscarServicos() {
       try {
-        const res = await fetch("http://localhost:3002/api/services/my", {
+        const res = await fetch("http://localhost:3002/api/services", {
           credentials: "include",
         });
 
         if (!res.ok) throw new Error("Erro ao buscar serviços");
         const data = await res.json();
-        setServicos(data);
+        setServicos(data.servicos || []);
       } catch (err) {
         console.error("Erro ao buscar serviços:", err);
       }

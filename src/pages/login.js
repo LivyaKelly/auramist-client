@@ -4,38 +4,50 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "@/styles/login.module.css";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
     try {
       const res = await fetch("http://localhost:3002/api/auth/login", {
         method: "POST",
-        credentials: "include",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
+
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || "Erro no login");
+        toast.error(data.message || "Erro ao realizar login");
         return;
       }
-      if (data.role === "PROFESSIONAL") {
-        router.push("/professional/dashboard");
-      } else {
-        router.push("/customer/dashboard");
-      }
+
+      toast.success(`Bem-vindo(a), ${data.name?.split(" ")[0]}! 🎉`);
+
+      setTimeout(() => {
+        if (data.role === "CLIENT") {
+          localStorage.setItem("userRole", "CLIENT");
+          router.push("/customer/dashboard");
+        } else if (data.role === "PROFESSIONAL") {
+          localStorage.setItem("userRole", "PROFESSIONAL");
+          router.push("/professional/dashboard");
+        } else {
+          toast.error("Tipo de usuário não reconhecido.");
+        }
+      }, 1000);
     } catch (error) {
-      setError("Erro no login");
+      console.error("Erro no login:", error);
+      toast.error("Erro de conexão com o servidor.");
     }
   };
 
@@ -78,17 +90,19 @@ export default function Login() {
               )}
             </button>
           </div>
+
           <div className={styles.links}>
             <Link href="/recuperar-senha">Esqueceu a senha?</Link>
           </div>
+
           <button type="submit" className={styles.loginButton}>
             Entrar
           </button>
+
           <p className={styles.singinLink}>
             Não tem conta? <Link href="/signup">Criar uma conta</Link>
           </p>
         </form>
-        {error && <p className={styles.errorMessage}>{error}</p>}
       </div>
     </div>
   );

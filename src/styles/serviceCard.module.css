@@ -6,8 +6,9 @@
 
 .listaServicos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
 }
 
 .cartaoServico {
@@ -20,6 +21,8 @@
 .imagemCard {
   border-radius: 12px 12px 0 0;
   object-fit: cover;
+  width: 100%;
+  display: block; 
 }
 
 .cardContent {
@@ -70,3 +73,190 @@
 .btnReservar:hover {
   background-color: #7ebfff;
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+.modalContent h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.modalContent label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: #444;
+}
+
+.modalContent input[type="date"],
+.modalContent input[type="time"] {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.modalButtons button {
+  flex: 1;
+  margin: 0 4px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modalButtons button:first-child {
+  background-color: #ccc;
+  color: #333;
+}
+
+.modalButtons button:first-child:hover {
+  background-color: #bbb;
+}
+
+.modalButtons button:last-child {
+  background-color: #7ebfff;
+  color: white;
+}
+
+.modalButtons button:last-child:hover {
+  background-color: #5aaeff;
+}
+
+
+@keyframes fadeIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+/* .tituloServicos {
+  font-size: 26px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: left;
+  color: #333;
+}
+
+.listaServicos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+.cartaoServico {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fefefe;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.cartaoServico:hover {
+  transform: translateY(-4px);
+}
+
+.imagemCard {
+  border-radius: 12px 12px 0 0;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.nomeServico {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.descricaoServico {
+  font-size: 14px;
+  color: #555;
+  flex: 1;
+  margin-bottom: 0.75rem;
+}
+
+.infoBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+
+.preco {
+  font-weight: 600;
+  color: #000;
+}
+
+.tempo {
+  font-size: 13px;
+  color: #888;
+}
+
+.btnReservar {
+  background-color: #A7C4E7;
+  color: white;
+  font-weight: 600;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btnReservar:hover {
+  background-color: #8db5e2;
+} */

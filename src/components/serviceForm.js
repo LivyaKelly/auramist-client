@@ -9,12 +9,30 @@ export default function ServiceForm({ onSuccess }) {
     price: "",
     image: null,
   });
+
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
   const [servicos, setServicos] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    buscarUsuario();
     buscarServicos();
   }, []);
+
+  async function buscarUsuario() {
+    try {
+      const res = await fetch("http://localhost:3002/api/auth/me", {
+        credentials: "include",
+      });
+
+      if (!res.ok) throw new Error("Falha ao obter usuário");
+
+      const data = await res.json();
+      setUsuarioLogado(data);
+    } catch (err) {
+      console.error("Erro ao buscar usuário logado:", err);
+    }
+  }
 
   async function buscarServicos() {
     try {
@@ -28,38 +46,28 @@ export default function ServiceForm({ onSuccess }) {
     }
   }
 
-  async function uploadImage(file) {
-    const form = new FormData();
-    form.append("image", file);
-
-    const res = await fetch("http://localhost:3002/api/upload-image", {
-      method: "POST",
-      body: form,
-    });
-
-    if (!res.ok) throw new Error("Erro ao enviar imagem");
-
-    const data = await res.json();
-    return data.url;
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const imageUrl = await uploadImage(formData.image);
+      if (!usuarioLogado?.id || !usuarioLogado?.name) {
+        throw new Error("Usuário não autenticado corretamente.");
+      }
+
+      const form = new FormData();
+      form.append("name", formData.name);
+      form.append("description", formData.description);
+      form.append("duration", formData.duration);
+      form.append("price", formData.price);
+      form.append("image", formData.image);
+      form.append("professionalId", usuarioLogado.id);
+      form.append("professionalName", usuarioLogado.name); 
 
       const res = await fetch("http://localhost:3002/api/services", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        body: form,
         credentials: "include",
-        body: JSON.stringify({
-          name: formData.name,
-          description: formData.description,
-          duration: Number(formData.duration),
-          price: Number(formData.price),
-          urlImage: imageUrl,
-        }),
       });
 
       if (!res.ok) throw new Error("Erro ao criar serviço");
@@ -71,6 +79,7 @@ export default function ServiceForm({ onSuccess }) {
         price: "",
         image: null,
       });
+
       buscarServicos();
       if (onSuccess) onSuccess();
     } catch (err) {
@@ -83,8 +92,11 @@ export default function ServiceForm({ onSuccess }) {
   return (
     <div className={styles.container}>
       <h2>Cadastrar Novo Serviço</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        {/* campos */}
+      <form
+        onSubmit={handleSubmit}
+        className={styles.form}
+        encType="multipart/form-data"
+      >
         <input
           className={styles.input}
           type="text"
@@ -129,6 +141,12 @@ export default function ServiceForm({ onSuccess }) {
             setFormData({ ...formData, image: e.target.files[0] })
           }
         />
+        
+        {usuarioLogado?.name && (
+          <p className={styles.professionalText}>
+            Profissional: <strong>{usuarioLogado.name}</strong>
+          </p>
+        )}
 
         <button type="submit" disabled={loading} className={styles.button}>
           {loading ? "Enviando..." : "Cadastrar Serviço"}

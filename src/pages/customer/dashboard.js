@@ -1,50 +1,65 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import SideBar from "@/components/customerSidebar";
+import React, { useEffect, useState } from "react";
+import SideBarClient from "@/components/customerSidebar";
 import Carrossel from "@/components/carousel";
 import CardServicos from "@/components/serviceCard";
 import styles from "@/styles/dashboard.module.css";
+import withAuth from "@/utils/withAuth";
 
-export default function Dashboard() {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
-  const [firstName, setFirstName] = useState("");
+function DashboardCliente() {
+  const [userName, setUserName] = useState("");
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3002/api/protected", {
+        const resUser = await fetch("http://localhost:3002/api/protected", {
           credentials: "include",
         });
-        if (!res.ok) return router.push("/login");
+        const userData = await resUser.json();
+        setUserName(userData.name?.split(" ")[0] ?? "Cliente");
 
-        const data = await res.json();
-        setUser(data);
-        setFirstName(data.name?.split(" ")[0] ?? "Usuário");
-      } catch {
-        router.push("/login");
+        const resServices = await fetch("http://localhost:3002/api/services", {
+          credentials: "include",
+        });
+        const data = await resServices.json();
+        setServices(data.servicos || []);
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchUser();
-  }, [router]);
 
-  if (loading) return <p>Carregando...</p>;
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.paginaContainer}>
-      <SideBar />
+      <SideBarClient />
       <div className={styles.conteudoPrincipal}>
-        <div className={styles.saudacaoCentralizada}>
-          <p>
-            Olá, <span className={styles.nomeDestaque}>{firstName}</span>
-          </p>
-        </div>
+        <h2 className={styles.saudacaoCentralizada}>
+          Olá, <span className={styles.nomeDestaque}>{userName}</span>
+        </h2>
+
         <Carrossel />
-        <CardServicos />
+
+        {/* <p className={styles.textoInfo}>
+          Aqui você pode visualizar os serviços disponíveis e agendar.
+        </p> */}
+
+        <h3 className={styles.subtitulo}>Serviços disponíveis:</h3>
+
+        {loading ? (
+          <p>Carregando...</p>
+        ) : services.length === 0 ? (
+          <p>Nenhum serviço disponível no momento.</p>
+        ) : (
+          <CardServicos services={services} />
+        )}
       </div>
     </div>
   );
 }
+
+export default withAuth(DashboardCliente, "CLIENT");

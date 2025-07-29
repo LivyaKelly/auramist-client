@@ -1,218 +1,59 @@
-.profileContainer {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 8px;
-    font-family: Arial, sans-serif;
+.paginaContainer {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background-color: #f5f7fa;
 }
 
-.headerSection {
-    display: flex;
-    align-items: center;
-    gap: 8rem;
+.conteudoPrincipal {
+  flex: 1;
+  padding: 2rem 3rem;
+  margin-left: 240px; 
+  overflow-y: auto;
+  background-color: #fff;
 }
 
-.profileImage {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.titulo {
+  font-size: 1.8rem;
+  color: #1A1F24;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
 }
 
-.editButton {
-    display: flex;
-    margin-left: 100%;
-    background-color: #e3e5e7;
-    border: none;
-    border-radius: 6px;
-    padding: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.dadosPerfil {
+  background-color: #F0F4FA;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  font-family: "Poppins", sans-serif;
 }
 
-.editButton:hover {
-    background-color: #ddd;
+.dado {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
 }
 
-.editIcon {
-    font-size: 18px;
-    color: #555;
+.dado strong {
+  color: #1A1F24;
 }
 
-.infoSection {
-    margin-top: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
+@media screen and (max-width: 768px) {
+  .conteudoPrincipal {
+    padding: 1rem;
+    margin-left: 0;
+  }
 
-.profileName {
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-}
+  .dadosPerfil {
+    padding: 1rem;
+  }
 
-.profileRole {
-    color: #777;
-    font-size: 18px;
-}
+  .titulo {
+    font-size: 1.5rem;
+  }
 
-.ratingsMessage {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 12px;
-}
-
-.ratings {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.avaliacao {
-    font-size: 12px;
-    color: #555;
-    
-}
-
-.stars {
-    color: #ffc107;
-    font-size: 20px;
-}
-
-.ratingValue {
-    color: #555;
-    font-size: 16px;
-}
-
-.messageButton {
-    background-color: #379bff;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    margin-top: 30px;
-}
-
-.messageButton:hover {
-    background-color: #0056b3;
-}
-
-.messageIcon {
-    margin-right: 6px;
-    font-size: 20px;
-}
-
-.appointmentDetails {
-    margin-top: 24px;
-}
-
-.salonName {
-    font-size: 22px;
-    font-weight: bold;
-    color: #333;
-}
-
-.appointmentList {
-    color: #555;
-    margin-top: 8px;
-}
-
-.tabNavigation {
-    display: flex;
-    gap: 15px;
-    margin-top: 24px;
-    justify-content: center;
-    margin-right: 30px;
-    border-bottom: 1px solid #e3e5e7;
-}
-
-.tabLink {
-    position: relative;
-    padding: 8px 16px;
-    font-weight: 500;
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.tabLink:hover {
-    color: #0056b3;
-}
-
-.tabLink::after {
-    content: "";
-    position: absolute;
-    bottom: 5;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #007bff;
-    transition: width 0.3s ease;
-}
-
-.tabLink.active::after {
-    width: 100%;
-}
-
-.contactInfo {
-    margin-top: 24px;
-}
-
-.contactTitle {
-    display: flex;
-    align-items: center;
-    margin-left: 80px;
-    justify-content: center;
-    font-size: 17px;
-    font-weight: bold;
-    color: #635e5e;
-}
-
-.contactList {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-    color: #555;
-    font-size: 16px;
-    line-height: 1.6;
-    margin: 20px;
-    gap: 10px;
-}
-
-.contactIcon {
-    color: #007bff;
-    font-size: 18px;
-}
-
-.contactItem1{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 8%;
-    margin-bottom: 8px;
-}
-
-.contactItem2{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 24%;
-    margin-bottom: 8px;
-}
-
-.contactItem3{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 7%;
-    margin-bottom: 8px;
+  .dado {
+    font-size: 1rem;
+  }
 }

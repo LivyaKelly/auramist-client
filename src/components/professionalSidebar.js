@@ -26,20 +26,22 @@ export default function BarraLateral() {
         <ul>
           <li
             className={`${styles.menuItem} ${
-              router.pathname === "/reservas" ? styles.active : ""
+              router.pathname === "/professional/appointments" ? styles.active : ""
             }`}
-            onClick={() => router.push("/reservas")}
+            onClick={() => router.push("/professional/appointments")}
           >
             <FiFolder className={styles.icone} /> Reservas
           </li>
+
           <li
             className={`${styles.menuItem} ${
-              router.pathname === "/profissional/dashboard" ? styles.active : ""
+              router.pathname === "/professional/dashboard" ? styles.active : ""
             }`}
-            onClick={() => router.push("/profissional/dashboard")}
+            onClick={() => router.push("/professional/dashboard")}
           >
             <FiBarChart2 className={styles.icone} /> Dashboard
           </li>
+
           <li
             className={`${styles.menuItem} ${
               router.pathname === "/perfil" ? styles.active : ""

@@ -19,17 +19,10 @@ export default function ServiceCard() {
     const fetchServicos = async () => {
       try {
         const res = await fetch("http://localhost:3002/api/services");
-        if (!res.ok) {
-          throw new Error(
-            `Erro ao buscar serviços: ${res.status} - ${res.statusText}`
-          );
-        }
+        if (!res.ok) throw new Error("Erro ao buscar serviços");
         const data = await res.json();
-        if (Array.isArray(data)) {
-          setServicos(data);
-        } else {
-          throw new Error("Formato de dados inválido recebido da API");
-        }
+        console.log("📦 Dados recebidos da API:", data);
+        setServicos(data.servicos || []);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -56,21 +49,30 @@ export default function ServiceCard() {
   const confirmarAgendamento = async () => {
     try {
       setIsConfirmModalOpen(false);
+
+      const dateOnly = dayjs(dataSelecionada).format("YYYY-MM-DD");
+      const timeOnly = dayjs(horaSelecionada).format("HH:mm");
+
       const response = await fetch("http://localhost:3002/api/appointments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
           serviceId: servicoSelecionado.id,
-          date: `${dayjs(dataSelecionada).format("YYYY-MM-DD")}T${dayjs(
-            horaSelecionada
-          ).format("HH:mm")}`,
+          date: dateOnly,
+          time: timeOnly,
         }),
       });
-      if (!response.ok) throw new Error("Erro ao confirmar o agendamento");
+
+      const data = await response.json();
+      console.log("📦 RESPOSTA COMPLETA:", data);
+
+      if (!response.ok) throw new Error(data.mensagem || "Erro ao agendar nesse horário. Tente outro horário.");
+
       alert("Agendamento confirmado com sucesso!");
+      // router.push("/customer/appointments");
     } catch (error) {
-      console.error(error);
+      console.error("❌ Erro no agendamento:", error);
       alert("Erro ao confirmar o agendamento. Tente novamente.");
     }
   };
@@ -80,7 +82,6 @@ export default function ServiceCard() {
 
   return (
     <div className={styles.servicosContainer}>
-      <h2 className={styles.tituloServicos}>Serviços</h2>
       <div className={styles.listaServicos}>
         {servicos.length > 0 ? (
           servicos.map((servico) => (
@@ -101,7 +102,7 @@ export default function ServiceCard() {
                   <span className={styles.preco}>
                     R${servico.price.toFixed(2)}
                   </span>
-                  <span className={styles.tempo}>⏱ {servico.duration} min</span>
+                  <span className={styles.tempo}> ⏱ {servico.duration} min</span>
                 </div>
                 <button
                   className={styles.btnReservar}
@@ -162,14 +163,12 @@ export default function ServiceCard() {
               {dayjs(dataSelecionada).format("DD/MM/YYYY")} às {horaSelecionada}
             </p>
             <p>
-              <strong>Profissional:</strong> Beatriz Silva
+              <strong>Profissional:</strong>{" "}
+              {servicoSelecionado?.professionalName || "Não informado"}
             </p>
             <p>
               <strong>Valor Total:</strong> R${" "}
               {servicoSelecionado?.price.toFixed(2)}
-            </p>
-            <p style={{ marginTop: 16 }}>
-              ✨ Estamos ansiosos para cuidar de você! 🥰💇‍♀️
             </p>
             <div className={styles.modalButtons}>
               <button onClick={() => setIsConfirmModalOpen(false)}>
