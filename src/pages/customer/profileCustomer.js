@@ -7,10 +7,12 @@ function ProfileCustomer() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:3002/api/protected", {
+        const res = await fetch(`${API_URL}/api/protected`, {
           credentials: "include",
         });
 
@@ -26,7 +28,7 @@ function ProfileCustomer() {
     };
 
     fetchUser();
-  }, []);
+  }, [API_URL]);
 
   if (loading) return <p>Carregando...</p>;
 

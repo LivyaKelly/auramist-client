@@ -3,11 +3,12 @@ import styles from "@/styles/serviceList.module.css";
 
 export default function ServiceList() {
   const [servicos, setServicos] = useState([]);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     async function buscarServicos() {
       try {
-        const res = await fetch("http://localhost:3002/api/services", {
+        const res = await fetch(`${API_URL}/api/services`, {
           credentials: "include",
         });
 

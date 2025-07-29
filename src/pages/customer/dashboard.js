@@ -10,16 +10,18 @@ function DashboardCliente() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const resUser = await fetch("http://localhost:3002/api/protected", {
+        const resUser = await fetch(`${API_URL}/api/protected`, {
           credentials: "include",
         });
         const userData = await resUser.json();
         setUserName(userData.name?.split(" ")[0] ?? "Cliente");
 
-        const resServices = await fetch("http://localhost:3002/api/services", {
+        const resServices = await fetch(`${API_URL}/api/services`, {
           credentials: "include",
         });
         const data = await resServices.json();
@@ -32,7 +34,7 @@ function DashboardCliente() {
     };
 
     fetchData();
-  }, []);
+  }, [API_URL]);
 
   return (
     <div className={styles.paginaContainer}>

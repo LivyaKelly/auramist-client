@@ -14,6 +14,8 @@ export default function ServiceForm({ onSuccess }) {
   const [servicos, setServicos] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     buscarUsuario();
     buscarServicos();
@@ -21,7 +23,7 @@ export default function ServiceForm({ onSuccess }) {
 
   async function buscarUsuario() {
     try {
-      const res = await fetch("http://localhost:3002/api/auth/me", {
+      const res = await fetch(`${API_URL}/api/auth/me`, {
         credentials: "include",
       });
 
@@ -36,7 +38,7 @@ export default function ServiceForm({ onSuccess }) {
 
   async function buscarServicos() {
     try {
-      const res = await fetch("http://localhost:3002/api/services/my", {
+      const res = await fetch(`${API_URL}/api/services/my`, {
         credentials: "include",
       });
       const data = await res.json();
@@ -62,9 +64,9 @@ export default function ServiceForm({ onSuccess }) {
       form.append("price", formData.price);
       form.append("image", formData.image);
       form.append("professionalId", usuarioLogado.id);
-      form.append("professionalName", usuarioLogado.name); 
+      form.append("professionalName", usuarioLogado.name);
 
-      const res = await fetch("http://localhost:3002/api/services", {
+      const res = await fetch(`${API_URL}/api/services`, {
         method: "POST",
         body: form,
         credentials: "include",
@@ -141,7 +143,7 @@ export default function ServiceForm({ onSuccess }) {
             setFormData({ ...formData, image: e.target.files[0] })
           }
         />
-        
+
         {usuarioLogado?.name && (
           <p className={styles.professionalText}>
             Profissional: <strong>{usuarioLogado.name}</strong>

@@ -8,15 +8,15 @@ function ProfessionalAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch(
-          "http://localhost:3002/api/appointments/professional",
-          {
-            credentials: "include",
-          }
-        );
+        const res = await fetch(`${API_URL}/api/appointments/professional`, {
+          credentials: "include",
+        });
+
         const data = await res.json();
 
         if (Array.isArray(data.agendamentos)) {
@@ -32,7 +32,7 @@ function ProfessionalAppointments() {
     };
 
     fetchAppointments();
-  }, []);
+  }, [API_URL]);
 
   const handleCancel = async (id) => {
     const confirm = window.confirm("Deseja cancelar este agendamento?");
@@ -43,8 +43,8 @@ function ProfessionalAppointments() {
 
       const rota =
         role === "PROFESSIONAL"
-          ? `http://localhost:3002/api/appointments/professional/${id}`
-          : `http://localhost:3002/api/appointments/${id}`;
+          ? `${API_URL}/api/appointments/professional/${id}`
+          : `${API_URL}/api/appointments/${id}`;
 
       const res = await fetch(rota, {
         method: "DELETE",

@@ -13,10 +13,12 @@ function ProfessionalDashboard() {
   const [loading, setLoading] = useState(true);
   const [servicos, setServicos] = useState([]);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     async function fetchServices() {
       try {
-        const res = await fetch("http://localhost:3002/api/services/my", {
+        const res = await fetch(`${API_URL}/api/services/my`, {
           method: "GET",
           credentials: "include",
         });
@@ -30,12 +32,12 @@ function ProfessionalDashboard() {
       }
     }
     fetchServices();
-  }, []);
+  }, [API_URL]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:3002/api/protected", {
+        const res = await fetch(`${API_URL}/api/protected`, {
           credentials: "include",
         });
         if (!res.ok) return router.push("/login");
@@ -50,7 +52,7 @@ function ProfessionalDashboard() {
       }
     };
     fetchUser();
-  }, [router]);
+  }, [router, API_URL]);
 
   if (loading) return <p>Carregando...</p>;
 

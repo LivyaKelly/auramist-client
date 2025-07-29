@@ -15,11 +15,13 @@ export default function Signup() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:3002/api/auth/register", {
+    const res = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

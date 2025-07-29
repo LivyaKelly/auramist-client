@@ -10,16 +10,18 @@ function Appointments() {
   const [loading, setLoading] = useState(true);
   const [modalData, setModalData] = useState(null);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   useEffect(() => {
     const fetchUserAndAppointments = async () => {
       try {
-        const userRes = await fetch("http://localhost:3002/api/protected", {
+        const userRes = await fetch(`${API_URL}/api/protected`, {
           credentials: "include",
         });
         const userData = await userRes.json();
         setUserName(userData.name?.split(" ")[0] || "Cliente");
 
-        const res = await fetch("http://localhost:3002/api/appointments", {
+        const res = await fetch(`${API_URL}/api/appointments`, {
           credentials: "include",
         });
         const data = await res.json();
@@ -32,11 +34,11 @@ function Appointments() {
     };
 
     fetchUserAndAppointments();
-  }, []);
+  }, [API_URL]);
 
   const cancelarAgendamento = async (id) => {
     try {
-      await fetch(`http://localhost:3002/api/appointments/${id}`, {
+      await fetch(`${API_URL}/api/appointments/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -56,7 +58,9 @@ function Appointments() {
         {loading ? (
           <p>Carregando...</p>
         ) : appointments.length === 0 ? (
-          <p className={styles.semAgendamentos}>Você ainda não possui agendamentos.</p>
+          <p className={styles.semAgendamentos}>
+            Você ainda não possui agendamentos.
+          </p>
         ) : (
           <div className={styles.grid}>
             {appointments.map((appt) => (
@@ -66,7 +70,8 @@ function Appointments() {
                 )}
                 <h3>{appt.service?.name}</h3>
                 <p>
-                  <strong>Data:</strong> {dayjs(appt.date).format("DD/MM/YYYY")}
+                  <strong>Data:</strong>{" "}
+                  {dayjs(appt.date).format("DD/MM/YYYY")}
                 </p>
                 <button
                   className={styles.botao}
@@ -104,7 +109,7 @@ function Appointments() {
               className={styles.cancelar}
               onClick={() => cancelarAgendamento(modalData.id)}
             >
-               Cancelar Agendamento ❌
+              Cancelar Agendamento ❌
             </button>
           </div>
         </>

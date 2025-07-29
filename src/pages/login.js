@@ -12,13 +12,16 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3002/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        console.log("🔍 API_URL:", API_URL),
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

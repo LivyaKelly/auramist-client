@@ -18,7 +18,12 @@ export default function ServiceCard() {
   useEffect(() => {
     const fetchServicos = async () => {
       try {
-        const res = await fetch("http://localhost:3002/api/services");
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
+          {
+            credentials: "include",
+          }
+        );
         if (!res.ok) throw new Error("Erro ao buscar serviços");
         const data = await res.json();
         console.log("📦 Dados recebidos da API:", data);
@@ -53,21 +58,27 @@ export default function ServiceCard() {
       const dateOnly = dayjs(dataSelecionada).format("YYYY-MM-DD");
       const timeOnly = dayjs(horaSelecionada).format("HH:mm");
 
-      const response = await fetch("http://localhost:3002/api/appointments", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          serviceId: servicoSelecionado.id,
-          date: dateOnly,
-          time: timeOnly,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/appointments`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            serviceId: servicoSelecionado.id,
+            date: dateOnly,
+            time: timeOnly,
+          }),
+        }
+      );
 
       const data = await response.json();
       console.log("📦 RESPOSTA COMPLETA:", data);
 
-      if (!response.ok) throw new Error(data.mensagem || "Erro ao agendar nesse horário. Tente outro horário.");
+      if (!response.ok)
+        throw new Error(
+          data.mensagem || "Erro ao agendar nesse horário. Tente outro horário."
+        );
 
       alert("Agendamento confirmado com sucesso!");
       // router.push("/customer/appointments");
@@ -102,7 +113,10 @@ export default function ServiceCard() {
                   <span className={styles.preco}>
                     R${servico.price.toFixed(2)}
                   </span>
-                  <span className={styles.tempo}> ⏱ {servico.duration} min</span>
+                  <span className={styles.tempo}>
+                    {" "}
+                    ⏱ {servico.duration} min
+                  </span>
                 </div>
                 <button
                   className={styles.btnReservar}

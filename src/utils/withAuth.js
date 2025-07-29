@@ -7,12 +7,15 @@ export default function withAuth(Component, allowedRoles = []) {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
     useEffect(() => {
       async function verifyRole() {
         try {
-          const res = await fetch("http://localhost:3002/api/protected", {
+          const res = await fetch(`${API_URL}/api/protected`, {
             credentials: "include",
           });
+
           if (!res.ok) {
             router.push("/login");
             return;
@@ -32,7 +35,7 @@ export default function withAuth(Component, allowedRoles = []) {
       }
 
       verifyRole();
-    }, [router]);
+    }, [router, API_URL]);
 
     if (loading) return <p>Carregando...</p>;
     if (!isAuthorized) return null;
