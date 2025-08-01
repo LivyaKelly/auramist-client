@@ -19,6 +19,8 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    console.log("URL da API que está sendo usada:", API_URL);
+    
     try {
       const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
