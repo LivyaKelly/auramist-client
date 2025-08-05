@@ -1,8 +1,6 @@
 import styles from "@/styles/customerSidebar.module.css";
 import {
-  FiFolder,
   FiBriefcase,
-  FiHeart,
   FiUser,
   FiLogOut,
 } from "react-icons/fi";
@@ -15,6 +13,11 @@ export default function CustomerSideBar() {
   const router = useRouter();
 
   const handleLogout = () => {
+    // 1. Remove o token e o papel do usuário do localStorage
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userRole');
+
+    // 2. Redireciona para a página inicial
     router.push("/");
   };
 

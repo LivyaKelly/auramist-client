@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import styles from "@/styles/serviceCard.module.css";
+import api from "@/utils/api"; // CORRIGIDO: O caminho agora aponta para a pasta utils
 
 export default function ServiceCard() {
   const [servicos, setServicos] = useState([]);
@@ -18,17 +19,12 @@ export default function ServiceCard() {
   useEffect(() => {
     const fetchServicos = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
-          {
-            credentials: "include",
-          }
-        );
-        if (!res.ok) throw new Error("Erro ao buscar serviços");
-        const data = await res.json();
-        console.log("📦 Dados recebidos da API:", data);
-        setServicos(data.servicos || []);
+        // Usa api.get para buscar os serviços
+        const response = await api.get("/api/services");
+        console.log("📦 Dados recebidos da API:", response.data);
+        setServicos(response.data.servicos || []);
       } catch (error) {
+        console.error("Erro ao buscar serviços:", error);
         setError(error.message);
       } finally {
         setLoading(false);
@@ -58,33 +54,20 @@ export default function ServiceCard() {
       const dateOnly = dayjs(dataSelecionada).format("YYYY-MM-DD");
       const timeOnly = dayjs(horaSelecionada).format("HH:mm");
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/appointments`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({
-            serviceId: servicoSelecionado.id,
-            date: dateOnly,
-            time: timeOnly,
-          }),
-        }
-      );
+      // Usa api.post para criar o agendamento
+      const response = await api.post("/api/appointments", {
+        serviceId: servicoSelecionado.id,
+        date: dateOnly,
+        time: timeOnly,
+      });
 
-      const data = await response.json();
-      console.log("📦 RESPOSTA COMPLETA:", data);
-
-      if (!response.ok)
-        throw new Error(
-          data.mensagem || "Erro ao agendar nesse horário. Tente outro horário."
-        );
-
+      console.log("📦 RESPOSTA COMPLETA:", response.data);
       alert("Agendamento confirmado com sucesso!");
       // router.push("/customer/appointments");
     } catch (error) {
       console.error("❌ Erro no agendamento:", error);
-      alert("Erro ao confirmar o agendamento. Tente novamente.");
+      const errorMessage = error.response?.data?.mensagem || "Erro ao confirmar o agendamento. Tente novamente.";
+      alert(errorMessage);
     }
   };
 

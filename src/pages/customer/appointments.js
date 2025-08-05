@@ -3,6 +3,7 @@ import styles from "@/styles/appointments.module.css";
 import dayjs from "dayjs";
 import SideBarClient from "@/components/customerSidebar";
 import withAuth from "@/utils/withAuth";
+import api from "@/utils/api"; // 1. Importar nossa instância do Axios
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
@@ -10,42 +11,42 @@ function Appointments() {
   const [loading, setLoading] = useState(true);
   const [modalData, setModalData] = useState(null);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
   useEffect(() => {
     const fetchUserAndAppointments = async () => {
       try {
-        const userRes = await fetch(`${API_URL}/api/protected`, {
-          credentials: "include",
-        });
-        const userData = await userRes.json();
+        // 2. Usar Promise.all para buscar os dados em paralelo, melhorando a performance
+        const [userResponse, appointmentsResponse] = await Promise.all([
+          api.get('/api/users/protected'), // Busca dados do usuário
+          api.get('/api/appointments')     // Busca os agendamentos
+        ]);
+
+        const userData = userResponse.data;
         setUserName(userData.name?.split(" ")[0] || "Cliente");
 
-        const res = await fetch(`${API_URL}/api/appointments`, {
-          credentials: "include",
-        });
-        const data = await res.json();
-        setAppointments(data.agendamentos || []);
+        const appointmentsData = appointmentsResponse.data;
+        setAppointments(appointmentsData.agendamentos || []);
+
       } catch (err) {
-        console.error("Erro:", err);
+        console.error("Erro ao buscar dados:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchUserAndAppointments();
-  }, [API_URL]);
+  }, []); // Dependências não são mais necessárias
 
   const cancelarAgendamento = async (id) => {
     try {
-      await fetch(`${API_URL}/api/appointments/${id}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
+      // 3. Usar api.delete para cancelar o agendamento
+      await api.delete(`/api/appointments/${id}`);
+      
+      // Atualiza a lista de agendamentos no estado, removendo o que foi cancelado
       setAppointments((prev) => prev.filter((a) => a.id !== id));
-      setModalData(null);
+      setModalData(null); // Fecha o modal
     } catch (err) {
-      console.error("Erro ao cancelar:", err);
+      console.error("Erro ao cancelar agendamento:", err);
+      alert("Não foi possível cancelar o agendamento. Tente novamente.");
     }
   };
 
@@ -118,4 +119,4 @@ function Appointments() {
   );
 }
 
-export default withAuth(Appointments, "CLIENT");
+export default withAuth(Appointments, ["CLIENT"]);

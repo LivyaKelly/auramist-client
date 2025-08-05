@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "@/styles/serviceForm.module.css";
+import api from "@/utils/api"; // 1. Importar nossa instância do Axios
 
 export default function ServiceForm({ onSuccess }) {
   const [formData, setFormData] = useState({
@@ -11,69 +12,43 @@ export default function ServiceForm({ onSuccess }) {
   });
 
   const [usuarioLogado, setUsuarioLogado] = useState(null);
-  const [servicos, setServicos] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  // A função buscarServicos não é mais necessária neste componente,
+  // pois a lista de serviços é exibida por outro componente (ServiceList).
+  // Vamos remover a chamada e o estado 'servicos'.
 
   useEffect(() => {
+    async function buscarUsuario() {
+      try {
+        // 2. Usar api.get para buscar o usuário logado
+        const response = await api.get("/api/auth/me");
+        setUsuarioLogado(response.data);
+      } catch (err) {
+        console.error("Erro ao buscar usuário logado:", err);
+      }
+    }
     buscarUsuario();
-    buscarServicos();
   }, []);
-
-  async function buscarUsuario() {
-    try {
-      const res = await fetch(`${API_URL}/api/auth/me`, {
-        credentials: "include",
-      });
-
-      if (!res.ok) throw new Error("Falha ao obter usuário");
-
-      const data = await res.json();
-      setUsuarioLogado(data);
-    } catch (err) {
-      console.error("Erro ao buscar usuário logado:", err);
-    }
-  }
-
-  async function buscarServicos() {
-    try {
-      const res = await fetch(`${API_URL}/api/services/my`, {
-        credentials: "include",
-      });
-      const data = await res.json();
-      setServicos(data);
-    } catch (err) {
-      console.error("Erro ao buscar serviços:", err);
-    }
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
     try {
-      if (!usuarioLogado?.id || !usuarioLogado?.name) {
-        throw new Error("Usuário não autenticado corretamente.");
-      }
-
+      // Cria o FormData para enviar os dados, incluindo a imagem
       const form = new FormData();
       form.append("name", formData.name);
       form.append("description", formData.description);
       form.append("duration", formData.duration);
       form.append("price", formData.price);
       form.append("image", formData.image);
-      form.append("professionalId", usuarioLogado.id);
-      form.append("professionalName", usuarioLogado.name);
 
-      const res = await fetch(`${API_URL}/api/services`, {
-        method: "POST",
-        body: form,
-        credentials: "include",
-      });
+      // 3. Usa api.post para criar o serviço.
+      // Axios configura o 'Content-Type' para 'multipart/form-data' automaticamente.
+      await api.post("/api/services", form);
 
-      if (!res.ok) throw new Error("Erro ao criar serviço");
-
+      // Limpa o formulário após o sucesso
       setFormData({
         name: "",
         description: "",
@@ -81,11 +56,14 @@ export default function ServiceForm({ onSuccess }) {
         price: "",
         image: null,
       });
+      e.target.reset(); // Garante que o input de arquivo seja limpo
 
-      buscarServicos();
+      // Chama a função de sucesso, se ela foi passada como prop
       if (onSuccess) onSuccess();
+
     } catch (err) {
-      console.error(err);
+      console.error("Erro ao criar serviço:", err);
+      // Adicionar um toast de erro aqui seria uma boa melhoria
     } finally {
       setLoading(false);
     }
@@ -97,7 +75,6 @@ export default function ServiceForm({ onSuccess }) {
       <form
         onSubmit={handleSubmit}
         className={styles.form}
-        encType="multipart/form-data"
       >
         <input
           className={styles.input}
@@ -154,7 +131,6 @@ export default function ServiceForm({ onSuccess }) {
           {loading ? "Enviando..." : "Cadastrar Serviço"}
         </button>
       </form>
-
       <hr className={styles.hr} />
     </div>
   );

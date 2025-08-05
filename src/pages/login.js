@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import api from "@/utils/api"; // Importa nossa instância centralizada do Axios
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,46 +13,43 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    console.log("URL da API que está sendo usada:", API_URL);
     
     try {
-      const res = await fetch(`${API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await api.post('/api/auth/login', { email, password });
+      const data = response.data;
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message || "Erro ao realizar login");
-        return;
-      }
+      // --- CORREÇÃO CRÍTICA ---
+      // Salva o token e o papel do usuário no localStorage.
+      // Sem o 'authToken', as próximas requisições não serão autenticadas.
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem("userRole", data.role);
+      // -------------------------
 
       toast.success(`Bem-vindo(a), ${data.name?.split(" ")[0]}! 🎉`);
 
       setTimeout(() => {
         if (data.role === "CLIENT") {
-          localStorage.setItem("userRole", "CLIENT");
           router.push("/customer/dashboard");
         } else if (data.role === "PROFESSIONAL") {
-          localStorage.setItem("userRole", "PROFESSIONAL");
           router.push("/professional/dashboard");
         } else {
           toast.error("Tipo de usuário não reconhecido.");
         }
       }, 1000);
+
     } catch (error) {
-      console.error("Erro no login:", error);
-      toast.error("Erro de conexão com o servidor.");
+      console.error("Ocorreu um erro ao tentar fazer o login:", error);
+      if (error.response) {
+        toast.error(error.response.data.message || "Erro no login. Verifique seus dados.");
+      } else if (error.request) {
+        toast.error("Não foi possível conectar ao servidor. Tente novamente mais tarde.");
+      } else {
+        toast.error("Ocorreu um erro inesperado. Verifique o console.");
+      }
     }
   };
 
