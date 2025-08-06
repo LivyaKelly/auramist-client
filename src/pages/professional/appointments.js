@@ -3,26 +3,23 @@ import ProfessionalSidebar from "@/components/professionalSidebar";
 import withAuth from "@/utils/withAuth";
 import styles from "@/styles/professionalAppointments.module.css";
 import Image from "next/image";
+import api from "@/utils/api"; // 1. Importar nossa instância do Axios
 
 function ProfessionalAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/appointments/professional`, {
-          credentials: "include",
-        });
-
-        const data = await res.json();
+        // 2. Usar api.get para buscar os agendamentos do profissional
+        const response = await api.get("/api/appointments/professional");
+        const data = response.data;
 
         if (Array.isArray(data.agendamentos)) {
           setAppointments(data.agendamentos);
         } else {
-          console.error("Formato inválido:", data);
+          console.error("Formato de dados inválido:", data);
         }
       } catch (err) {
         console.error("Erro ao buscar agendamentos:", err);
@@ -32,35 +29,23 @@ function ProfessionalAppointments() {
     };
 
     fetchAppointments();
-  }, [API_URL]);
+  }, []); // Dependências não são mais necessárias
 
   const handleCancel = async (id) => {
-    const confirm = window.confirm("Deseja cancelar este agendamento?");
-    if (!confirm) return;
-
+    // Para uma melhor experiência do usuário, o ideal seria usar um modal de confirmação
+    // Em vez do window.confirm, que pode ser bloqueado.
+    // Por enquanto, vamos cancelar diretamente.
     try {
-      const role = localStorage.getItem("userRole");
-
-      const rota =
-        role === "PROFESSIONAL"
-          ? `${API_URL}/api/appointments/professional/${id}`
-          : `${API_URL}/api/appointments/${id}`;
-
-      const res = await fetch(rota, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setAppointments((prev) => prev.filter((appt) => appt.id !== id));
-      } else {
-        alert(data.mensagem || "Erro ao cancelar agendamento.");
-      }
+      // 3. Usar api.delete para cancelar o agendamento
+      // A rota já é específica para o profissional, então a lógica complexa foi removida
+      await api.delete(`/api/appointments/professional/${id}`);
+      
+      // Atualiza o estado para remover o agendamento da tela
+      setAppointments((prev) => prev.filter((appt) => appt.id !== id));
     } catch (err) {
       console.error("Erro ao cancelar agendamento:", err);
-      alert("Erro inesperado ao cancelar agendamento.");
+      const message = err.response?.data?.mensagem || "Erro inesperado ao cancelar agendamento.";
+      alert(message); // Em uma aplicação real, usar um toast seria melhor
     }
   };
 

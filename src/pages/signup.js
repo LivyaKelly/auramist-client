@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import api from "@/utils/api"; // Usar nossa instância do Axios
+import { toast } from "react-toastify";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
@@ -11,25 +13,46 @@ export default function Signup() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("CLIENT");
+  const [profilePicture, setProfilePicture] = useState(null); // 1. Estado para a foto
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setProfilePicture(e.target.files[0]);
+    }
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${API_URL}/api/auth/register`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, phone, password, role }),
-    });
-    const data = await res.json();
-    if (!res.ok) setError(data.message || "Erro no cadastro");
-    else router.push("/login");
+
+    // 2. Usar FormData para enviar a imagem junto com os outros dados
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("phone", phone);
+    formData.append("password", password);
+    formData.append("role", role);
+    if (profilePicture) {
+      formData.append("profilePicture", profilePicture);
+    }
+
+    try {
+      // 3. Enviar os dados com Axios
+      await api.post('/api/auth/register', formData);
+      
+      toast.success("Cadastro realizado com sucesso! Redirecionando...");
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+
+    } catch (error) {
+      console.error("Erro no cadastro:", error);
+      const message = error.response?.data?.message || "Erro ao realizar o cadastro.";
+      toast.error(message);
+    }
   };
 
   return (
@@ -77,13 +100,24 @@ export default function Signup() {
               onClick={togglePasswordVisibility}
               className={styles.eyeButton}
             >
-              {showPassword ? (
-                <AiFillEyeInvisible size={20} />
-              ) : (
-                <AiFillEye size={20} />
-              )}
+              {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
             </button>
           </div>
+          
+          {/* 4. Novo campo para upload da foto */}
+          <div className={styles.fileInputContainer}>
+            <label htmlFor="profilePicture" className={styles.fileInputLabel}>
+              Foto de Perfil (Opcional)
+            </label>
+            <input
+              id="profilePicture"
+              type="file"
+              accept="image/*"
+              className={styles.input}
+              onChange={handleFileChange}
+            />
+          </div>
+
           <div className={styles.radioGroup}>
             <label>
               <input
@@ -111,7 +145,6 @@ export default function Signup() {
             Já tem conta? <Link href="/login">Login</Link>
           </p>
         </form>
-        {error && <p className={styles.errorMessage}>{error}</p>}
       </div>
     </div>
   );

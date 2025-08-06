@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import SideBarClient from "@/components/customerSidebar";
 import withAuth from "@/utils/withAuth";
 import api from "@/utils/api"; // 1. Importar nossa instância do Axios
+import Image from "next/image";
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
@@ -40,7 +41,7 @@ function Appointments() {
     try {
       // 3. Usar api.delete para cancelar o agendamento
       await api.delete(`/api/appointments/${id}`);
-      
+
       // Atualiza a lista de agendamentos no estado, removendo o que foi cancelado
       setAppointments((prev) => prev.filter((a) => a.id !== id));
       setModalData(null); // Fecha o modal
@@ -110,7 +111,7 @@ function Appointments() {
               className={styles.cancelar}
               onClick={() => cancelarAgendamento(modalData.id)}
             >
-              Cancelar Agendamento ❌
+              Cancelar Agendamento
             </button>
           </div>
         </>

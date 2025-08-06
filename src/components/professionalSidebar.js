@@ -44,9 +44,9 @@ export default function BarraLateral() {
 
           <li
             className={`${styles.menuItem} ${
-              router.pathname === "/perfil" ? styles.active : ""
+              router.pathname === "/professional/profileProfessional" ? styles.active : ""
             }`}
-            onClick={() => router.push("/perfil")}
+            onClick={() => router.push("/professional/profileProfessional")}
           >
             <FiUser className={styles.icone} /> Perfil
           </li>
