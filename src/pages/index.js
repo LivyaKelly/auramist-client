@@ -51,8 +51,8 @@ export default function Home() {
         </button>
       </div>
 
-      <Sobre />
-      <Rodape />
+      {/* <Sobre /> */}
+      {/* <Rodape /> */}
     </>
   );
 }

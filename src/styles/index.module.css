@@ -15,7 +15,6 @@
     position: absolute;
     top: -2%;
     left: 23%;
-    bottom: 40%;
     width: 800px;
     height: 420px;
     z-index: 20;
@@ -37,6 +36,7 @@
     transform: translate(-50%, -50%); 
     color: #1A1F24;
     text-align: center; 
+    font-size: 2rem;
 }
 
 .aviso {
@@ -46,6 +46,8 @@
     transform: translate(-50%, -50%); 
     color: #73808C;
     text-align: center;
+    font-size: 1.2rem;
+    width: 80%;
 }
 
 .botoes {
@@ -69,7 +71,7 @@
     cursor: pointer;
     background-color: transparent;
     color: #A7C4E7;
-    width: 100%;
+    width: 220px;
     height: 7vh;
     font-size: 1rem;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -78,4 +80,77 @@
 .botaoC:hover {
     background-color: #A7C4E7;
     color: #fff;
+}
+
+/* Telas (768px a 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mulherMeditando {
+    width: 500px;
+    height: auto;
+    left: 50%;
+    top: 2%;
+    transform: translateX(-50%);
+  }
+
+  .elemento {
+    height: 70vh;
+  }
+
+  .boasVindas {
+    font-size: 1.8rem;
+    top: 70%;
+  }
+
+  .aviso {
+    font-size: 1.1rem;
+    top: 77%;
+    width: 70%;
+  }
+
+  .botoes {
+    top: 88%;
+  }
+
+  .botaoC {
+    width: 250px;
+    font-size: 1rem;
+  }
+}
+
+/* Telas (até 767px) */
+@media (max-width: 767px) {
+  .mulherMeditando {
+    width: 280px;
+    height: auto;
+    left: 50%;
+    top: 5%;
+    transform: translateX(-50%);
+  }
+
+  .elemento {
+    height: 60vh;
+  }
+
+  .boasVindas {
+    font-size: 1.4rem;
+    top: 65%;
+    width: 90%;
+  }
+
+  .aviso {
+    font-size: 1rem;
+    top: 73%;
+    width: 85%;
+  }
+
+  .botoes {
+    top: 85%;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .botaoC {
+    width: 80%;
+    font-size: 0.9rem;
+  }
 }

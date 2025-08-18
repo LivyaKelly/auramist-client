@@ -3,19 +3,19 @@ import ProfessionalSidebar from "@/components/professionalSidebar";
 import withAuth from "@/utils/withAuth";
 import styles from "@/styles/professionalAppointments.module.css";
 import Image from "next/image";
-import api from "@/utils/api"; // 1. Importar nossa instância do Axios
+import api from "@/utils/api";
+import { FiMenu } from "react-icons/fi";
 
 function ProfessionalAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false); 
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        // 2. Usar api.get para buscar os agendamentos do profissional
         const response = await api.get("/api/appointments/professional");
         const data = response.data;
-
         if (Array.isArray(data.agendamentos)) {
           setAppointments(data.agendamentos);
         } else {
@@ -27,31 +27,37 @@ function ProfessionalAppointments() {
         setLoading(false);
       }
     };
-
     fetchAppointments();
-  }, []); // Dependências não são mais necessárias
+  }, []);
 
   const handleCancel = async (id) => {
-    // Para uma melhor experiência do usuário, o ideal seria usar um modal de confirmação
-    // Em vez do window.confirm, que pode ser bloqueado.
-    // Por enquanto, vamos cancelar diretamente.
     try {
-      // 3. Usar api.delete para cancelar o agendamento
-      // A rota já é específica para o profissional, então a lógica complexa foi removida
       await api.delete(`/api/appointments/professional/${id}`);
-      
-      // Atualiza o estado para remover o agendamento da tela
       setAppointments((prev) => prev.filter((appt) => appt.id !== id));
     } catch (err) {
       console.error("Erro ao cancelar agendamento:", err);
-      const message = err.response?.data?.mensagem || "Erro inesperado ao cancelar agendamento.";
-      alert(message); // Em uma aplicação real, usar um toast seria melhor
+      const message =
+        err.response?.data?.mensagem || "Erro inesperado ao cancelar agendamento.";
+      alert(message);
     }
   };
 
   return (
     <div className={styles.container}>
-      <ProfessionalSidebar />
+      <ProfessionalSidebar isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      <div className={styles.topbarMobile}>
+        <button
+          className={styles.hamburgerBtn}
+          onClick={() => setMenuOpen(true)}
+          aria-label="Abrir menu"
+          type="button"
+        >
+          <FiMenu size={24} />
+        </button>
+        <h2 className={styles.topbarTitle}>Meus Agendamentos</h2>
+      </div>
+
       <main className={styles.main}>
         <h1 className={styles.title}>Meus Agendamentos</h1>
 
@@ -64,9 +70,7 @@ function ProfessionalAppointments() {
             {appointments.map((appt) => (
               <div className={styles.card} key={appt.id}>
                 <Image
-                  src={
-                    appt.service?.urlImage || "/img/icons/default-service.png"
-                  }
+                  src={appt.service?.urlImage || "/img/icons/default-service.png"}
                   alt="Imagem do serviço"
                   width={400}
                   height={200}
@@ -91,6 +95,7 @@ function ProfessionalAppointments() {
                 <button
                   className={styles.cancelButton}
                   onClick={() => handleCancel(appt.id)}
+                  type="button"
                 >
                   Cancelar Agendamento
                 </button>

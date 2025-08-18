@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import api from "@/utils/api"; // Usar nossa instância do Axios
+import api from "@/utils/api"; 
 import { toast } from "react-toastify";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Link from "next/link";
@@ -13,7 +13,7 @@ export default function Signup() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("CLIENT");
-  const [profilePicture, setProfilePicture] = useState(null); // 1. Estado para a foto
+  const [profilePicture, setProfilePicture] = useState(null); 
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
@@ -28,7 +28,6 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // 2. Usar FormData para enviar a imagem junto com os outros dados
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
@@ -40,7 +39,6 @@ export default function Signup() {
     }
 
     try {
-      // 3. Enviar os dados com Axios
       await api.post('/api/auth/register', formData);
       
       toast.success("Cadastro realizado com sucesso! Redirecionando...");
@@ -104,7 +102,6 @@ export default function Signup() {
             </button>
           </div>
           
-          {/* 4. Novo campo para upload da foto */}
           <div className={styles.fileInputContainer}>
             <label htmlFor="profilePicture" className={styles.fileInputLabel}>
               Foto de Perfil (Opcional)

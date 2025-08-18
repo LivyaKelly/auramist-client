@@ -1,0 +1,86 @@
+.paginaContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.conteudoPrincipal {
+  padding: 20px;
+  margin-left: 240px; 
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.saudacaoCentralizada {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  margin-top: 20px;
+}
+
+.nomeDestaque { color: #A7C4E7; }
+
+.linhaConteudo {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.topbarMobile {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 56px;
+  display: none;                 
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  background: #e3e6e9;
+  z-index: 40;
+}
+
+.hamburgerBtn {
+  background: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+
+.topbarTitle { font-size: 18px; font-weight: 700; margin: 0; }
+.topbarTitle .nomeDestaque { color: #A7C4E7; }
+
+/* Telas (768–1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .conteudoPrincipal {
+    margin-left: 0;       
+    padding: 20px;
+    padding-top: 72px;    
+  }
+
+  .topbarMobile { display: flex; }
+  .saudacaoCentralizada { display: none; }
+
+  .linhaConteudo {
+    gap: 1.25rem;
+  }
+}
+
+/* Telas (≤767px)         */
+@media (max-width: 767px) {
+  .conteudoPrincipal {
+    margin-left: 0;
+    padding: 16px;
+    padding-top: 72px;    
+  }
+
+  .topbarMobile { display: flex; }
+  .saudacaoCentralizada { display: none; }
+
+  .linhaConteudo {
+    flex-direction: column;  
+    gap: 1rem;
+  }
+}

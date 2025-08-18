@@ -5,6 +5,9 @@
 
 .imagemBanner {
   border-radius: 10px;
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .setaEsquerda,
@@ -13,7 +16,7 @@
   top: 50%;
   transform: translateY(-50%);
   background-color: rgba(82, 80, 80, 0.296);
-  border: none;  
+  border: none;
   border-radius: 50%;
   cursor: pointer;
   z-index: 2;
@@ -24,15 +27,34 @@
   align-items: center;
 }
 
-.setaEsquerda {
-  left: 10px;
-}
-
-.setaDireita {
-  right: 10px;
-}
+.setaEsquerda { left: 10px; }
+.setaDireita  { right: 10px; }
 
 .setaEsquerda:hover,
 .setaDireita:hover {
   background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Telas (768–1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .containerCarrossel {
+    margin: 32px 24px;   
+  }
+  .setaEsquerda, .setaDireita {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Telas (≤767px) */
+@media (max-width: 767px) {
+  .containerCarrossel {
+    margin: 20px 16px;
+  }
+  .setaEsquerda, .setaDireita {
+    width: 36px;
+    height: 36px;
+  }
+  .setaEsquerda { left: 6px; }
+  .setaDireita  { right: 6px; }
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import api from "@/utils/api"; // Importa nossa instância centralizada do Axios
+import api from "@/utils/api"; 
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import Link from "next/link";
 import Image from "next/image";
@@ -22,12 +22,8 @@ export default function Login() {
       const response = await api.post('/api/auth/login', { email, password });
       const data = response.data;
 
-      // --- CORREÇÃO CRÍTICA ---
-      // Salva o token e o papel do usuário no localStorage.
-      // Sem o 'authToken', as próximas requisições não serão autenticadas.
       localStorage.setItem('authToken', data.token);
       localStorage.setItem("userRole", data.role);
-      // -------------------------
 
       toast.success(`Bem-vindo(a), ${data.name?.split(" ")[0]}! 🎉`);
 

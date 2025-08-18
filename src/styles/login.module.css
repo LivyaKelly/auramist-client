@@ -1,117 +1,201 @@
 .loginContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: url('/img/backgrounds/Login-background.svg') center/cover;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('/img/backgrounds/Login-background.svg') center/cover;
+  box-sizing: border-box;                  
+}
+
+.formContainer {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  width: 450px;
+  box-sizing: border-box;                  
+}
+
+.title {
+  font-family: 'Pacifico', cursive;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;                         
+  height: 44px;
+  box-sizing: border-box;
+}
+
+.passwordField {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.passwordField input {
+  padding-right: 44px;                    
+}
+
+.eyeButton {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  width: 40px;                             
+  height: 40px;
+  display: grid;
+  place-items: center;
+}
+
+.togglePassword {
+  background: none;
+  border: none;
+  color: #0070f3;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.loginButton {
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  height: 46px;
+}
+
+.links {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.singinLink {
+  font-size: 14px;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+.singinLink a {
+  color: #0070f3;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.linkText a {
+  color: #0070f3;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.paragraphLink {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.paragraphLink a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.errorMessage {
+  color: red;
+  margin-top: 10px;
+}
+
+/* Telas (768px a 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .loginContainer {
+    padding: 24px;                          
+    height: 100dvh;                         
+    background-position: center;
+  }
 
   .formContainer {
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 450px;
+    width: 420px;
+    padding: 28px;
+    border-radius: 12px;
   }
-  
-  .title {
-    font-family: 'Pacifico', cursive;
-    font-size: 32px;
-    margin-bottom: 20px;
+
+  .input { height: 46px; }
+  .loginButton { height: 48px; }
+
+  .formContainer img {
+    max-width: 130px;
+    height: auto;
   }
-  
+}
+
+/* Telas (até 767px) */
+@media (max-width: 767px) {
+  .loginContainer {
+    padding-left: max(24px, calc(env(safe-area-inset-left) + 16px));
+    padding-right: max(24px, calc(env(safe-area-inset-right) + 16px));
+    padding-top: max(24px, env(safe-area-inset-top));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    min-height: 100dvh;
+    height: auto;
+    box-sizing: border-box;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .formContainer {
+    width: 100%;
+    max-width: 344px;                        
+    padding: 20px 18px;
+    border-radius: 14px;
+    margin-inline: auto;
+    box-shadow: 0 10px 22px rgba(0,0,0,0.09);
+  }
+
+  .formContainer img {
+    max-width: 92px;                       
+    height: auto;
+  }
+
   .input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .passwordField {
-    display: flex;
-    align-items: center;
-  }
-  
-  .togglePassword {
-    background: none;
-    border: none;
-    color: #0070f3;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-  }
-  
-  .loginButton {
-    background: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    width: 100%;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .links {
-    margin-bottom: 15px;
-    text-align: left;
+    height: 40px;
+    padding: 9px 12px;
+    margin-bottom: 12px;
   }
 
-  .singinLink {
-    font-size: 14px;
-    margin: 10px 0;
-    font-weight: 500;
-  }
+  .passwordField input { padding-right: 48px; }
 
-  .singinLink a {
-    color: #0070f3;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-
-  
-  .linkText a {
-    color: #0070f3;
-    text-decoration: none;
-    font-size: 14px;
-  }
-  
-  .paragraphLink {
-    margin-top: 10px;
-    font-size: 14px;
-  }
-  
-  .paragraphLink a {
-    color: #0070f3;
-    text-decoration: none;
-  }
-  
-  .passwordField {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  
-  .passwordField input {
-    padding-right: 40px;
-  }
-  
   .eyeButton {
-    position: absolute;
-    right: 10px;
-    margin-bottom: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
+    right: 8px;
+    width: 32px;
+    height: 32px;
   }
-  
-  .errorMessage {
-    color: red;
-    margin-top: 10px;
+
+  .loginButton {
+    height: 44px;
+    padding: 10px;
+    font-size: 16px;
   }
-  
+
+  .links { margin-bottom: 12px; }
+  .singinLink { font-size: 0.9rem; }
+}
+
+/* Telas muito estreitas (320–360px) */
+@media (max-width: 360px) {
+  .formContainer { max-width: 320px; padding: 18px 14px; }
+  .input { height: 38px; }
+  .loginButton { height: 42px; }
+}

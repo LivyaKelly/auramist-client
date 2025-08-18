@@ -1,3 +1,7 @@
+.servicosContainer {
+  width: 100%;
+}
+
 .tituloServicos {
   color: black;
   margin-bottom: 30px;
@@ -16,18 +20,18 @@
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 0;
+  background: #fff;
 }
 
 .imagemCard {
   border-radius: 12px 12px 0 0;
   object-fit: cover;
   width: 100%;
-  display: block; 
+  height: 180px;
+  display: block;
 }
 
-.cardContent {
-  padding: 16px;
-}
+.cardContent { padding: 16px; }
 
 .nomeServico {
   font-size: 20px;
@@ -48,16 +52,8 @@
   margin-bottom: 12px;
 }
 
-.preco {
-  font-size: 18px;
-  font-weight: bold;
-  color: #000;
-}
-
-.tempo {
-  font-size: 14px;
-  color: #888;
-}
+.preco { font-size: 18px; font-weight: bold; color: #000; }
+.tempo { font-size: 14px; color: #888; }
 
 .btnReservar {
   width: 100%;
@@ -69,37 +65,35 @@
   padding: 8px 0;
   transition: 0.3s;
 }
-
-.btnReservar:hover {
-  background-color: #7ebfff;
-}
+.btnReservar:hover { background-color: #7ebfff; }
 
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;                         
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 10000;                  
+  -webkit-backdrop-filter: blur(1.5px);
+  backdrop-filter: blur(1.5px);
 }
 
 .modalContent {
   background-color: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease;
+  border-radius: 16px;
+  padding: 20px;
+  width: min(92vw, 420px);
+  max-height: 85dvh;
+  overflow: auto;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+  animation: fadeIn 0.2s ease;
 }
 
 .modalContent h3 {
   font-size: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   color: #333;
 }
 
@@ -113,150 +107,96 @@
 .modalContent input[type="date"],
 .modalContent input[type="time"] {
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   margin-top: 4px;
-  font-size: 14px;
+  font-size: 16px; 
+  box-sizing: border-box;
 }
 
 .modalButtons {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 16px;
 }
 
 .modalButtons button {
   flex: 1;
-  margin: 0 4px;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .modalButtons button:first-child {
-  background-color: #ccc;
+  background-color: #e5e7eb;
   color: #333;
 }
-
-.modalButtons button:first-child:hover {
-  background-color: #bbb;
-}
+.modalButtons button:first-child:hover { background-color: #d1d5db; }
 
 .modalButtons button:last-child {
   background-color: #7ebfff;
   color: white;
 }
-
-.modalButtons button:last-child:hover {
-  background-color: #5aaeff;
-}
-
+.modalButtons button:last-child:hover { background-color: #5aaeff; }
 
 @keyframes fadeIn {
-  from {
-    transform: translateY(-10px);
-    opacity: 0;
+  from { transform: translateY(-6px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Telas (768px a 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .listaServicos {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    padding: 4px 6px 12px;     
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;       
+    overscroll-behavior-x: contain;
   }
-  to {
-    transform: translateY(0px);
-    opacity: 1;
+  .listaServicos::-webkit-scrollbar { display: none; } 
+  .listaServicos { scrollbar-width: none; }
+
+  .cartaoServico {
+    flex: 0 0 100%;           
+    max-width: 100%;
+    scroll-snap-align: start;
+    margin: 0.25rem 0 0;
   }
+
+  .imagemCard { height: 200px; }
+  .nomeServico { font-size: 19px; }
 }
 
-/* .tituloServicos {
-  font-size: 26px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-align: left;
-  color: #333;
-}
+/* Telas (até 767px) */
+@media (max-width: 767px) {
+  .listaServicos {
+    display: flex;
+    overflow-x: auto;
+    gap: 14px;
+    padding: 4px 6px 12px;     
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+  }
+  .listaServicos::-webkit-scrollbar { display: none; }
+  .listaServicos { scrollbar-width: none; }
 
-.listaServicos {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.2rem;
-  margin-top: 2rem;
-}
+  .cartaoServico {
+    flex: 0 0 100%;
+    max-width: 100%;
+    scroll-snap-align: start;
+    margin: 0.25rem 0 0;
+  }
 
-.cartaoServico {
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: #fefefe;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  .imagemCard { height: 180px; }
+  .nomeServico { font-size: 18px; }
 }
-
-.cartaoServico:hover {
-  transform: translateY(-4px);
-}
-
-.imagemCard {
-  border-radius: 12px 12px 0 0;
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-}
-
-.cardContent {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: space-between;
-}
-
-.nomeServico {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-family: 'Poppins', sans-serif;
-}
-
-.descricaoServico {
-  font-size: 14px;
-  color: #555;
-  flex: 1;
-  margin-bottom: 0.75rem;
-}
-
-.infoBottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 0.75rem;
-}
-
-.preco {
-  font-weight: 600;
-  color: #000;
-}
-
-.tempo {
-  font-size: 13px;
-  color: #888;
-}
-
-.btnReservar {
-  background-color: #A7C4E7;
-  color: white;
-  font-weight: 600;
-  padding: 8px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btnReservar:hover {
-  background-color: #8db5e2;
-} */
