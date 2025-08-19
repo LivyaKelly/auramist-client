@@ -23,6 +23,7 @@
   transition: background 0.28s ease;
   z-index: 50;
 }
+
 .backdropOpen {
   background: rgba(0,0,0,0.4);
   pointer-events: auto;
@@ -114,8 +115,12 @@
 /* Para tela (≤767px) */
 @media (max-width: 767px) {
   .logo img {
-    width: 290px;            
+    width: 200px;     
   }
+  .barraLateral{
+    width: 240px;
+  }
+  
 }
 
 @media (max-width: 360px) {

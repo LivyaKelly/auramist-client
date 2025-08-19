@@ -8,6 +8,7 @@ export default function ListaServicos() {
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingService, setEditingService] = useState(null);
+  const [newImageFile, setNewImageFile] = useState(null);
 
   const fetchMyServices = useCallback(async () => {
     try {
@@ -27,12 +28,18 @@ export default function ListaServicos() {
   }, [fetchMyServices]);
 
   const handleDelete = async (serviceId) => {
-    if (!window.confirm("Tem certeza que deseja apagar este serviço? Esta ação é irreversível.")) {
+    if (
+      !window.confirm(
+        "Tem certeza que deseja apagar este serviço? Esta ação é irreversível."
+      )
+    ) {
       return;
     }
     try {
       await api.delete(`/api/services/${serviceId}`);
-      setServicos((prevServicos) => prevServicos.filter((s) => s.id !== serviceId));
+      setServicos((prevServicos) =>
+        prevServicos.filter((s) => s.id !== serviceId)
+      );
       toast.success("Serviço apagado com sucesso!");
     } catch (err) {
       console.error("Erro ao apagar serviço:", err);
@@ -42,6 +49,7 @@ export default function ListaServicos() {
 
   const handleEdit = (servico) => {
     setEditingService(servico);
+    setNewImageFile(null);
     setIsEditModalOpen(true);
   };
 
@@ -50,19 +58,27 @@ export default function ListaServicos() {
     if (!editingService) return;
 
     try {
-      const updatedData = {
-        name: editingService.name,
-        description: editingService.description,
-        duration: Number(editingService.duration),
-        price: parseFloat(editingService.price),
-      };
+      const formData = new FormData();
+      formData.append("name", editingService.name ?? "");
+      formData.append("description", editingService.description ?? "");
+      formData.append("duration", String(editingService.duration ?? ""));
+      formData.append("price", String(editingService.price ?? ""));
+      if (newImageFile) {
+        formData.append("image", newImageFile);
+      }
 
-      const response = await api.put(`/api/services/${editingService.id}`, updatedData);
+      const { data } = await api.put(
+        `/api/services/${editingService.id}`,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
       setServicos((prev) =>
-        prev.map((s) => (s.id === editingService.id ? response.data.servico : s))
+        prev.map((s) => (s.id === editingService.id ? data.servico : s))
       );
       setIsEditModalOpen(false);
       setEditingService(null);
+      setNewImageFile(null);
       toast.success("Serviço atualizado com sucesso!");
     } catch (err) {
       console.error("Erro ao atualizar serviço:", err);
@@ -70,9 +86,7 @@ export default function ListaServicos() {
     }
   };
 
-  if (loading) {
-    return <p>A carregar os seus serviços...</p>;
-  }
+  if (loading) return <p>A carregar os seus serviços...</p>;
 
   return (
     <>
@@ -86,8 +100,12 @@ export default function ListaServicos() {
                 <img src={servico.urlImage} alt={servico.name} />
                 <h4>{servico.name}</h4>
                 <p>{servico.description}</p>
-                <p><strong>Duração:</strong> {servico.duration} min</p>
-                <p><strong>Preço:</strong> R$ {Number(servico.price).toFixed(2)}</p>
+                <p>
+                  <strong>Duração:</strong> {servico.duration} min
+                </p>
+                <p>
+                  <strong>Preço:</strong> R$ {Number(servico.price).toFixed(2)}
+                </p>
                 <div className={styles.cardActions}>
                   <button
                     className={styles.editButton}
@@ -110,7 +128,6 @@ export default function ListaServicos() {
         </div>
       </div>
 
-      {/* Modal para editar serviço */}
       {isEditModalOpen && editingService && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent} role="dialog" aria-modal="true">
@@ -125,33 +142,53 @@ export default function ListaServicos() {
                 }
                 required
               />
+
               <label className={styles.label}>Descrição</label>
               <textarea
                 value={editingService.description}
                 onChange={(e) =>
-                  setEditingService({ ...editingService, description: e.target.value })
+                  setEditingService({
+                    ...editingService,
+                    description: e.target.value,
+                  })
                 }
                 required
               />
+
               <label className={styles.label}>Duração (min)</label>
               <input
                 type="number"
                 value={editingService.duration}
                 onChange={(e) =>
-                  setEditingService({ ...editingService, duration: e.target.value })
+                  setEditingService({
+                    ...editingService,
+                    duration: e.target.value,
+                  })
                 }
                 required
               />
+
               <label className={styles.label}>Preço (R$)</label>
               <input
                 type="number"
                 step="0.01"
                 value={editingService.price}
                 onChange={(e) =>
-                  setEditingService({ ...editingService, price: e.target.value })
+                  setEditingService({
+                    ...editingService,
+                    price: e.target.value,
+                  })
                 }
                 required
               />
+
+              <label className={styles.label}>Imagem (opcional)</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setNewImageFile(e.target.files?.[0] ?? null)}
+              />
+
               <div className={styles.modalButtons}>
                 <button type="button" onClick={() => setIsEditModalOpen(false)}>
                   Cancelar
