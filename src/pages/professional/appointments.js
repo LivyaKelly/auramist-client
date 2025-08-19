@@ -55,11 +55,11 @@ function ProfessionalAppointments() {
         >
           <FiMenu size={24} />
         </button>
-        <h2 className={styles.topbarTitle}>Meus Agendamentos</h2>
+        <h2 className={styles.topbarTitle}>Agendamentos dos Clientes</h2>
       </div>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Meus Agendamentos</h1>
+        <h1 className={styles.title}>Agendamentos dos Clientes</h1>
 
         {loading ? (
           <p>Carregando agendamentos...</p>
