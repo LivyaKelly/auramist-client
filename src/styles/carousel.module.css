@@ -1,13 +1,6 @@
 .containerCarrossel {
-  margin: 70px 90px;
+  margin: 60px 116px;
   position: relative;
-}
-
-.imagemBanner {
-  border-radius: 10px;
-  width: 100%;
-  height: auto;
-  display: block;
 }
 
 .setaEsquerda,
@@ -15,20 +8,20 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(82, 80, 80, 0.296);
+  background-color: rgba(88, 80, 80, 0.296);
   border: none;
   border-radius: 50%;
   cursor: pointer;
   z-index: 2;
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.setaEsquerda { left: 10px; }
-.setaDireita  { right: 10px; }
+.setaEsquerda { left: 2px; }
+.setaDireita  { right: 2px; }
 
 .setaEsquerda:hover,
 .setaDireita:hover {

@@ -4,7 +4,6 @@ const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
-// Interceptor que adiciona o token em cada requisição
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken');

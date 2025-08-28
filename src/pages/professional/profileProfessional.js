@@ -177,12 +177,6 @@ export default function Profile() {
             </ul>
           </div>
 
-          <div className={styles.actionsCard}>
-            <button onClick={handleLogout} className={styles.logoutButton} type="button">
-              <LogOut size={16} />
-              <span>Sair da Conta</span>
-            </button>
-          </div>
         </main>
       </div>
 
